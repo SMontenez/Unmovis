@@ -1,0 +1,275 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="./styles.css">
+        <title>UnMOVis</title>
+
+        <!-- Loading the GoogleMap API -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgsVjUW40NJeeOY1-0j-D84oTk5SjfF9o&amp;sensor=false"></script>
+
+        <!-- Loading the jQuery and jQueryUI libraries -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+        <!-- Loading scripts -->
+        <script type="text/javascript" src="./utils.js"></script>
+        <script type="text/javascript" src="./boat_selection.js"></script>
+        <script type="text/javascript" src="./map_features.js"></script>
+        <script type="text/javascript" src="./interface.js"></script>
+        <script type="text/javascript" src="./markers.js"></script>
+    </head>
+
+    <body>
+        <div id="map-canvas"></div>
+        <div class="overlay"></div>
+        <div class="window" id="search-options">
+            <div id="options-title">Search options</div>
+            <div><input id="locations" name="locations" type="checkbox" checked>Find locations</div>
+            <div><input id="details" name="details" type="checkbox">Find general informations</div>
+            <button type="button" id="search-ok">OK</button>
+        </div>
+        <div class="window" id="search-validation">
+            <div id="options-title">Search validation</div>
+            <div>Number of pictures found : <span></span></div>
+            <div>Do you wish to start the extraction (estimated time : <span></span>)</div>
+            <div id="search-valid">
+                <button type="button" id="yes">Yes</button>
+                <button type="button" id="no">No</button>
+            </div>
+        </div>
+        <div class="window" id="search-aborted">
+            <div id="options-title">Search aborted</div>
+            <div>This ship informations have already been extracted. Look into the predefined list</div>
+            <button type="button" id="abort-ok">OK</button>
+        </div>
+        <div class="window" id="search">
+            <div id="options-title">Searching...</div>
+            <div>Number of pictures : <span>-</span></div>
+            <div>Deduplication : <span>-</span></div>
+            <div>Filtering on-land positions : <span>-</span></div>
+            <div>Filtering far-fetched trajectories : <span>-</span></div>
+            <div>Filtering outliers : <span>-</span></div>
+            <button type="button" id="search-over">Done</button>
+        </div>
+        <div id="marker-popup">
+            <div>
+                <div>User :</div>
+                <div>Trust :</div>
+            </div>
+            <div>
+                <div id="username"></div>
+                <div id="trust"></div>
+            </div>
+        </div>
+        <div id="boat-and-date">
+            <div id="boat-choice">
+                <span class="choice-text">Predefined list:</span>
+                <select id="boats-list" name="boat-name"></select>
+                <span class="choice-text">Online search:</span>
+                <span id="choice-user">
+                    <input type="text" id="user-boat">
+                    <span></span>
+                </span>
+                <button class="button" type="button" id="validation" disabled>OK</button>
+            </div>
+            <div id="date-choice">
+                <div id="dates-slider"></div>
+                <input class="date" type="text" size="8" id="start-date"> 
+                <input class="date" type="text" size="8" id="end-date"> 
+                <span id="number"></span>
+            </div>
+        </div>
+        <div id="visu-options">
+            <h1>Visualisation options</h1>
+            <div class="hide-options"><button type="button" class="hide" value="hidden">Show</button></div>
+            <div id="filters">
+                <div style="color:#1F77C4"><input class="checkbox" id="not-filtered" type="checkbox" checked>More precise locations<span class="count"></span></div>
+                <div>
+                    <div id="filtering"><input class="checkbox" id="filtered" type="checkbox" checked>Less precise locations<span class="count"></span></div>
+                    <select id="filter-choice">
+                        <option value="all" id="all">All</option>
+                        <option value="onLand" id="on-land">On-land locations</option>
+                        <option value="outlier" id="outlier">Outliers</option>
+                        <option value="impJourney" id="imp-journey">Far-fetched trajectories</option>
+                    </select>
+                </div>
+            </div>
+            <button class="button" type="button" id="chrono" value="hidden" style="margin-bottom:10px;">View chronological itinerary</button>
+        </div>
+        <div class="window" id="traj-details">
+            <div>
+                <div id="start-marker">
+                    <h2>From</h2>
+                    <div>
+                        <h3>Position :</h3>
+                        <h3>Date :</h3>
+                    </div>
+                    <div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+                <div id="end-marker">
+                    <h2>To</h2>
+                    <div>
+                        <h3>Position :</h3>
+                        <h3>Date :</h3>
+                    </div>
+                    <div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div id="totals">
+                <h2>Route</h2>
+                <div>
+                    <h3>Distance :</h3>
+                    <h3>Time :</h3>
+                    <h3>Required speed :</h3>
+                    <h3>Maximum speed :</h3>
+                </div>
+                <div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <button class="button" type="button">OK</button>
+        </div>
+        <div id="boat-infos">
+            <h1>General Information</h1>
+            <div class="hide-options"><button type="button" class="hide" value="hidden">Show</button></div>
+            <div class="infos" id="infos-name">
+                <div class="MMSI">MMSI:</div>
+                <div class="IMO">IMO:</div>
+                <div class="Flag">Flag:</div>
+                <div class="Build">Build:</div>
+                <div class="Length">Length:</div>
+                <div class="Draught">Draught:</div>
+                <div class="Beam">Beam:</div>
+                <div class="GT">GT:</div>
+                <div class="Speed">Max speed:</div>
+                <div class="Owner">Owner:</div>
+                <div class="Type">Type:</div>
+            </div>
+            <div class="infos" id="infos-value">
+                <div id="MMSI" class="MMSI"></div>
+                <div id="IMO" class="IMO"></div>
+                <div id="Flag" class="Flag"></div>
+                <div id="Build" class="Build"></div>
+                <div id="Length" class="Length"></div>
+                <div id="Draught" class="Draught"></div>
+                <div id="Beam" class="Beam"></div>
+                <div id="GT" class="GT"></div>
+                <div id="Speed" class="Speed"></div>
+                <div id="Owner" class="Owner"></div>
+                <div id="Type" class="Type"></div>
+            </div>
+        </div>
+        <div id="complete-MMSI" class="info-popup">
+            <h1>MMSI</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-IMO" class="info-popup">
+            <h1>IMO</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-Flag" class="info-popup">
+            <h1>Flag</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-Build" class="info-popup">
+            <h1>Build</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-Length" class="info-popup">
+            <h1>Length</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-Draught" class="info-popup">
+            <h1>Draught</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-Beam" class="info-popup">
+            <h1>Beam</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-GT" class="info-popup">
+            <h1>GT</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-Speed" class="info-popup">
+            <h1>Speed</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-Owner" class="info-popup">
+            <h1>Owner</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="complete-Type" class="info-popup">
+            <h1>Type</h1>
+            <div>MarineTraffic:<span class="MT"></span></div>
+            <div>ShippingExplorer:<span class="SE"></span></div>
+            <div>ShipSpotting:<span class="SS"></span></div>
+            <div>GrossTonnage:<span class="GT"></span></div>
+            <div>Wikipedia:<span class="Wiki"></span></div>
+        </div>
+        <div id="users-trust">
+            <div id="trust-slider"></div>
+            <div class="legend">100%</div>
+            <div id="tooltip"></div>
+            <div>Users trust score<span>>>></span></div>
+        </div>
+        <div class="window" id="users-list">
+            <button class="button" type="button" id="users-chosen">OK</button>
+        </div>
+        <button class="button" type="button" id="close-info">Close all infoWindows</button>
+
+        <script>
+            get_boat_selection();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,6 @@
+Site;Build;Name;Type;MMSI;IMO;Beam;Length;Flag;Owner;GT;Speed;Draught;
+GT;2003;Costa Fortuna;Passengers Ship;;9239783;;;Italy;;102587;;;
+Wiki;2003;Costa Fortuna;;247094800;9239783;36 m;273 m;ITA, Genoa;Carnival Corporation & plc;102587;20 kn;8.2 m;
+MT;2003;Costa Fortuna;Passengers ship;247094800;9239783;35 m;272 m;Italy (IT);;102587;;;
+SS;2003;Costa Fortuna;Passengers Ship;247094800;9239783;35 m;272 m;Italy;Costa Crociere - Genova, Italy;102587;;8.4 m;
+SE;;Costa Fortuna;Passenger Ship;247094800;9239783;35 m;272 m;Italy;Carnival Corp;102587;20 kn;8.3 m;

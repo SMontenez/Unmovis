@@ -1,0 +1,515 @@
+/* ------   GENERAL STYLE   ------ */
+
+html 
+{ 
+    height: 100% 
+}
+
+body 
+{ 
+    height: 100%; 
+    margin: 0; 
+    padding: 0; 
+    font-family: Arial, serif;
+    font-size: 15px;
+}
+
+h1
+{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+h2
+{
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 1px;
+    border-bottom: 1px solid black;
+}
+
+h3
+{
+    font-size: 12px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+#map-canvas
+{
+    height: 100%;
+}
+
+.button
+{
+    font-family: Verdana, Arial;
+    font-weight: bold;
+    color: black;
+    padding: 5px 10px;
+    border: 1px solid black;
+    border-radius: 5px; 
+    background-color: silver;
+    cursor: pointer;
+}
+
+.button:hover 
+{
+    background-color: gray;
+}
+
+.overlay
+{
+    opacity: 0.5;
+    background-color: grey;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: 3000;
+    display: none;
+}
+
+.window
+{
+    position: absolute;
+    z-index: 5000;
+    display: none;
+    padding: 25px 40px;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: white;
+}
+
+
+
+
+/* ------   TRUST POPUP   ------ */
+
+
+#marker-popup
+{
+    position: absolute;
+    display: none;
+    z-index: 1000;
+    font-size: 12px;
+    padding: 15px;
+    border: 1px solid gray;
+    border-radius: 100%; 
+    background-color: #F5DEB3;
+}
+
+#marker-popup>div
+{
+    display: inline-block;
+}
+
+#marker-popup>div>div
+{
+    margin: 5px;
+}
+
+#marker-popup>div>div[id]
+{
+    font-weight: bold;
+    font-style: italic;
+    margin-left: 10px;
+}
+
+
+
+
+/* ------   BOAT SELECTION   ------ */
+
+
+#boat-and-date
+{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
+}
+
+#boat-choice
+{   
+    display: inline-block;
+    margin: 0 auto 20px auto;
+    padding: 5px 15px 10px;
+    border: 1px solid silver;
+    border-radius: 15px;
+    background-color: silver;
+}   
+
+#boats-list
+{
+    margin-right: 80px;
+}
+
+#user-boat
+{   
+    padding-left: 5px;
+    padding-right: 16px;
+    margin: 0;
+    border: 1px solid grey;
+}   
+
+#choice-user
+{
+    position: relative;
+}
+
+#choice-user span
+{
+    position: absolute;
+    display: block;
+    top: 3px;
+    right: 5px;
+    width: 16px;
+    height: 16px;
+    background: url("http://cdn.sstatic.net/stackoverflow/img/sprites.png?v=4") 0 -690px;
+    cursor: pointer;
+}
+
+#validation
+{   
+    visibility: hidden;
+    width: 50px;
+    margin-top: 10px;
+    margin-left: 20px;
+    font-size: 14px;
+    background-color: white;
+}  
+
+#validation:hover
+{
+    background-color: gray;
+}
+
+
+
+
+/* ------   DATE MIN/MAX CHOICE   ------ */
+
+
+#dates-slider
+{
+    margin: 5px 20px 4px 20px;
+}
+
+#date-choice
+{
+    display: none;
+}
+
+.date
+{
+    position: absolute;
+    color: red;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    border: 1px solid red;
+    border-radius: 5px;
+    background-color: silver;
+    text-align: center;
+}
+
+#number 
+{
+    position: absolute;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid black;
+    background-color: silver;
+    border-radius: 50%; 
+    padding: 1px 6px;
+    width: 30px;
+    z-index: 400;
+    text-align: center;
+}
+
+
+
+
+/* ------   VISUALISATION OPTIONS   ------ */
+
+
+#visu-options
+{
+    position: absolute;
+    left: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+    opacity: 0.85;
+    padding: 10px 20px;
+    display: none;
+}
+
+.hide-options
+{
+    text-align: center;
+}
+
+.hide
+{
+    background-color: white;
+    border: 0;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.hide:hover
+{
+    color: gray;
+}
+
+#filters
+{
+    display: none;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.checkbox
+{
+    margin: 8px;
+}
+
+.count
+{
+    font-size: 15px;
+    margin-left: 10px;
+    color: black;
+}
+
+#filtering>.count
+{
+    margin-left: 13px;
+}
+
+#filter-choice
+{
+    margin-left: 29px;
+    font-size: 14px;
+    padding: 2px 0 2px 2px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #B00202;
+}
+
+#filtering
+{
+    color: #B00202;
+}
+
+#chrono
+{
+    display: none;
+    margin: 20px;
+}
+
+
+
+
+/* ------   GENERAL INFORMATIONS   ------ */
+
+
+#boat-infos
+{
+    position: absolute;
+    right: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+    opacity: 0.85;
+    padding: 10px 20px;
+    display: none;
+}
+
+.infos
+{
+    display: inline-block;
+    margin-top: 25px;
+}
+
+#infos-value
+{
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.infos > div
+{
+    height: 18px;
+    margin: 5px;
+    cursor: help;
+}
+
+#close-info
+{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: none;
+}
+
+.info-popup
+{
+    display: none;
+    position: absolute;
+    z-index: 500;
+    padding: 15px 25px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: silver;
+    opacity: 1;
+}
+
+.info-popup > h1
+{
+    margin-bottom: 15px;
+    text-decoration: underline;
+}
+
+.info-popup div
+{
+    margin: 10px 5px;
+}
+
+.info-popup span
+{
+    font-weight: bold;
+    margin: 10px;
+}
+
+
+
+
+/* ------   SEARCH OPTIONS   ------ */
+
+#options-title
+{
+    font-size: 24px;
+    font-weight: bold;
+    padding-bottom: 1px;
+    border-bottom: 2px solid black;
+    margin: 15px 15px 25px 15px;
+}
+
+#search-options 
+{
+    font-style: italic;
+}
+
+#search-options input
+{
+    margin: 15px 10px 15px 0;  
+    font-style: italic;
+}
+
+#search-options > button
+{
+    margin: 15px;
+    border-radius: 3px;
+}
+
+
+/* ------   ROUTE DETAILS   ------ */
+
+#start-marker, #end-marker, #start-marker>div, #end-marker>div, #totals>div
+{
+    display: inline-block;
+    margin: 10px;
+}
+
+#start-marker>div>div, #end-marker>div>div, #totals>div>div
+{
+    font-size: 12px;
+    margin: 12px 0px;
+}
+
+/* ------   USER TRUST   ------ */
+
+#users-trust
+{
+    display: none;
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+    opacity: 0.85;
+    padding: 10px 40px 5px 28px;
+    text-align: center;
+}
+
+.legend
+{
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+#tooltip
+{
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    color: #FF4500;
+}
+
+#tooltip + div 
+{
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+#users-trust span 
+{
+    font-weight: bold;
+    margin-left: 4px;
+    background-color: #C9C9C5;
+    cursor: pointer;
+}
+
+#users-trust .ui-slider 
+{
+    height: 10px;
+    width: 150px;
+}
+
+#users-trust .ui-slider .ui-slider-handle
+{
+    height: 15px;
+    width: 7px;
+    margin-left: -5px;
+    margin-top: 1px;
+}
+
+#users-list
+{
+    text-align: center;
+}
+
+#users-chosen
+{
+    width: 50px;
+    margin-top: 10px;
+    margin-left: 20px;
+    font-size: 14px;
+    background-color: white;
+}  
+
+#users-chosen:hover
+{
+    background-color: gray;
+}
+
